@@ -9,8 +9,6 @@ class EllipticCurve :
         self.a = a
         self.b = b
         self.p = p
-        self.points = []
-        self.__generatePoints()
     
 
     # Addition of point
@@ -73,10 +71,15 @@ class EllipticCurve :
 
     # Generate point for base
     # Return as an array of list of y for value x
-    def __generatePoints(self):
-        for x in range(1,self.p):
-            remainder = (x**3 + self.a*x + self.b)%self.p 
-            for y in range(1,self.p) :
-
+    def generatePoints(self,x):
+        temp_list = []
+        remainder = self.y(x)
+        for y in range(1,self.p) :
                 if y**2%self.p == remainder :
-                    self.points.append(Point(x,y))
+                    temp_list.append(y)
+
+        return temp_list
+
+    def y(self,x):
+        return (x**3 + self.a*x + self.b)%self.p
+                    
