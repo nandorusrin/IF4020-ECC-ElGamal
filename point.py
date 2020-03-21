@@ -47,9 +47,10 @@ class EllipticCurve :
                 # Inf
                 return Point(-1,-1)
             else :
-                gradient = ((first_point.y - second_point.y)/(first_point.x - second_point.x))%self.p
-                new_x = (gradient^^2 - (first_point.x + second_point.x))%self.p
-                new_y = (gradient(first_point.x - new_x) - first_point.y)%self.p
+                delta_x = (first_point.x - second_point.x)
+                gradient = ((first_point.y - second_point.y)*self.__modulo_invers(delta_x))%self.p
+                new_x = (gradient**2 - (first_point.x + second_point.x))%self.p
+                new_y = (gradient*(first_point.x - new_x) - first_point.y)%self.p
 
                 return Point(new_x,new_y)
 
@@ -57,18 +58,30 @@ class EllipticCurve :
         if point.y == 0:
             return Point(-1,-1)
         else :
-            
-            gradient = ((3*point.x + self.a)/(2*point.y))%self.p
-            new_x = (gradient^^2 - 2*point.x)%self.p
+
+            gradient = ((3*(point.x**2) + self.a)*self.__modulo_invers(2*point.y))%self.p
+            new_x = (gradient**2 - 2*point.x)%self.p
             new_y = (gradient*(point.x - new_x) - point.y)%self.p
         
             return Point(new_x,new_y)
 
     # Multiply point n times
     def multiplication(self,point,constant) :
-        for _ in range(constant) :
-            res_point = self.addition(res_point + point)
+        res_point = Point(point.x,point.y)
+        for _ in range(1,constant) :
+            res_point = self.addition(res_point ,point)
         return res_point
+
+
+    # Finding the invers of num mod p
+    # There should be an invers, 
+    def __modulo_invers(self,num):
+        for i in range(1,self.p):
+            if (num*i)%self.p == 1 :
+                return i
+        
+        return 0
+
 
 
 
