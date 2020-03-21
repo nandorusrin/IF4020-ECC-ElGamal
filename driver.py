@@ -1,6 +1,7 @@
-from point import Point,EllipticCurve
+from point import Point
+from ellipticcurve import EllipticCurve
 import random
-
+import sys
 
 
 
@@ -10,15 +11,14 @@ import random
 def main():
 
 
-    RECEIVER_PRIVATE_KEY = 100
-    PRIME_NUMBER = 23
+    RECEIVER_PRIVATE_KEY = 5
+    PRIME_NUMBER = 101
     SENDER_RANDOM = random.choice(range(1,PRIME_NUMBER))
 
     ec = EllipticCurve(1,6,PRIME_NUMBER)
 
     plain_message = random.choice(ec.points)
     print("Plain message is : " + str(plain_message))
-
     
     # Encryption
     BASE_POINT = random.choice(ec.points)
@@ -37,6 +37,5 @@ def main():
 
     retrieved_plaintext = ec.addition(second_cipher,first_block_inv)
     print("retrieved plaintext is : " + str(retrieved_plaintext))
-
 
 main()
