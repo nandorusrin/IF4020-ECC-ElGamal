@@ -18,13 +18,15 @@ class Point :
 # Elliptic curve class
 # Equation in the form of y^2 = (x^3 + ax + b) mod p
 # Contains information about the curve itself
-# However, does not store information about all points in the curve
 class EllipticCurve :
 
     def __init__(self,a,b,p):
         self.a = a
         self.b = b
         self.p = p
+        self.points = []
+
+        self.__generatePoints()
     
 
     # Addition of point
@@ -81,6 +83,17 @@ class EllipticCurve :
                 return i
         
         return 0
+
+
+    def __generatePoints(self):
+        for x in range(0,self.p):
+            rem = (x**3 + self.a*x + self.b)%self.p
+            for y in range(0,self.p):
+                if ((y**2)%self.p) == rem :
+                    self.points.append(Point(x,y))
+
+        
+
 
 
 
